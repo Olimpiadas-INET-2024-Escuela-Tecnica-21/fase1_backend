@@ -3,7 +3,7 @@ import prisma from "prisma"
 class SalesManagerModel{
 
     static async create({username, password}) {
-        return await prisma.salesManager.create({
+        return prisma.salesManager.create({
             data:{
                 username,
                 password
@@ -13,7 +13,7 @@ class SalesManagerModel{
 
     static async findMany(){
 
-        return await prisma.salesManager.findMany({
+        return prisma.salesManager.findMany({
 
             include: {
                 profile: true

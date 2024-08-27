@@ -3,7 +3,7 @@ import prisma from "prisma"
 class OrderModel{
 
     static async create({date, state, totalPrice, check, paymentMethod}) {
-        return await prisma.order.create({
+        return prisma.order.create({
             data:{
                 date, 
                 state, 
@@ -16,7 +16,7 @@ class OrderModel{
 
     static async findMany(){
 
-        return await prisma.order.findMany({
+        return prisma.order.findMany({
 
             include: {
                 client: true,

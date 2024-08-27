@@ -17,7 +17,7 @@ const clientInclude = {
 class ClientModel {
 
     static async create({username, email, password, address}) {
-        return await prisma.client.create({
+        return prisma.client.create({
             data:{
                 username,
                 email,
@@ -38,7 +38,7 @@ class ClientModel {
 
     static async findMany(){
 
-        return await prisma.client.findMany({clientInclude})
+        return prisma.client.findMany({clientInclude})
 
     }
     

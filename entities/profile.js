@@ -3,7 +3,7 @@ import prisma from "prisma"
 class ProfileModel{
 
     static async create({name}) {
-        return await prisma.profile.create({
+        return prisma.profile.create({
             data:{
                 name
             }

@@ -3,7 +3,7 @@ import prisma from "prisma"
 class ProductModel{
 
     static async create({username, category, stock, price, description}) {
-        return await prisma.product.create({
+        return prisma.product.create({
             data:{
                 username, 
                 category, 
@@ -16,7 +16,7 @@ class ProductModel{
 
     static async findMany(){
 
-        return await prisma.product.findMany()
+        return prisma.product.findMany()
         
     }
     

@@ -1,3 +1,5 @@
+import prisma from "prisma"
+
 class ProductModel{
 
     static async create({username, category, stock, price, description}) {

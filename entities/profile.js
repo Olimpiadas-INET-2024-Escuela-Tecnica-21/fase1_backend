@@ -1,3 +1,5 @@
+import prisma from "prisma"
+
 class ProfileModel{
 
     static async create({name}) {

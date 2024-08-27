@@ -1,3 +1,5 @@
+import prisma from "prisma"
+
 const clientInclude = {
     include:{
         shoppingCart: {

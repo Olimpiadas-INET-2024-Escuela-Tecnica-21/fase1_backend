@@ -1,3 +1,5 @@
+import prisma from "prisma"
+
 class SalesManagerModel{
 
     static async create({username, password}) {

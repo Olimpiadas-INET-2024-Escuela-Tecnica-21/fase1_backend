@@ -1,3 +1,5 @@
+import prisma from "prisma"
+
 class OrderModel{
 
     static async create({date, state, totalPrice, check, paymentMethod}) {

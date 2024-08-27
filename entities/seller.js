@@ -1,3 +1,5 @@
+import prisma from "prisma"
+
 class SellerModel{
 
     static async create({username, password}) {

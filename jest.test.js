@@ -1,16 +1,15 @@
-import { ClientRepository } from "./src/entities/repository";
+import TestEntity from "./src/entities/test.entity.js";
 
-test("Testing is a singleton", () => {
-    try {
-        const clientRepository1 = new ClientRepository();
-        
-        clientRepository1.sayHello();
+const testEntity = new TestEntity()
 
-        const clientRepository2 = new ClientRepository();
+test("Testing entity talks to repository", () => {
+    expect(testEntity.sayHello()).toBe("Hello from TestRepository");
+})
 
-        clientRepository2.sayHello();
-    } catch (error) {
-        expect(error.message).toBe('Cannot create another instance of ClientRepository because it is a singleton');
+test("Testing repository is a singleton", () => {
+    try{
+        new TestEntity()
+    } catch (e) {
+        expect(e.message).toBe('Cannot create another instance of TestRepository because it is a singleton')
     }
-
-});
+})

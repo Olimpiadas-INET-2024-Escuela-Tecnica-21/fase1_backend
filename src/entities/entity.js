@@ -13,7 +13,14 @@ export default class Entity {
         }
 
         this.schema = schema
-        this.repository = repository
+        this.repository = new repository()
+    }
+
+    /** 
+        * Method to say hello. for testing purposes
+    */
+    sayHello() {
+        return this.repository.sayHello()
     }
 
     /** 

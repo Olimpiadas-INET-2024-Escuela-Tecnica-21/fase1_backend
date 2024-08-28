@@ -2,6 +2,11 @@ import { PrismaClient } from "@prisma/client";
 
 //const PRISMA = new PrismaClient();
 
+/**
+ * Repository class
+ * @abstract
+ * @property {Object} prisma - Prisma client
+ */
 class Repository {
     static #instance = undefined
 
@@ -15,9 +20,12 @@ class Repository {
     }
 
     sayHello() {
-        console.log(`hello from ${Object.getPrototypeOf(this).constructor.name}`);
+        const text = `Hello from ${Object.getPrototypeOf(this).constructor.name}`;
+        console.log(text);
+        return text;
     }
 
+    
     async create(data){}
 
     async findMany(){}
@@ -29,6 +37,10 @@ class Repository {
     async delete(){}
 }
 
+/**
+ * ClientRepository class, its responsible for handling the client data
+ * @extends Repository
+ */
 class ClientRepository extends Repository {
     static #instance = undefined
 
@@ -48,6 +60,10 @@ class ClientRepository extends Repository {
     }
 }
 
+/**
+ * OrderRepository class, its responsible for handling the order data
+ * @extends Repository
+ */
 class OrderRepository extends Repository {
     static #instance = undefined
 
@@ -67,6 +83,10 @@ class OrderRepository extends Repository {
     }
 }
 
+/**
+ * ProductRepository class, its responsible for handling the product data
+ * @extends Repository
+ */
 class ProductRepository extends Repository {
     static #instance = undefined
 
@@ -86,6 +106,10 @@ class ProductRepository extends Repository {
     }
 }
 
+/**
+ * SalesManagerRepository class, its responsible for handling the sales manager data
+ * @extends Repository
+ */
 class SalesManagerRepository extends Repository {
     static #instance = undefined
 
@@ -105,6 +129,10 @@ class SalesManagerRepository extends Repository {
     }
 }
 
+/**
+ * SellerRepository class, its responsible for handling the seller data
+ * @extends Repository
+ */
 class SellerRepository extends Repository {
     static #instance = undefined
 
@@ -124,4 +152,27 @@ class SellerRepository extends Repository {
     }
 }
 
-export { ClientRepository, OrderRepository, ProductRepository, SalesManagerRepository, SellerRepository }
+/**
+ * TestRepository class, only for testing purposes
+ * @extends Repository
+ */
+class TestRepository extends Repository {
+    static #instance = undefined
+
+    constructor() {
+        super();
+        
+        
+
+        if (!TestRepository.#instance) {
+            console.log('TestRepository instance created');
+            TestRepository.#instance = this;
+            return TestRepository.#instance;
+        }
+
+        throw new Error('Cannot create another instance of TestRepository because it is a singleton');
+        
+    }
+}
+
+export { ClientRepository, OrderRepository, ProductRepository, SalesManagerRepository, SellerRepository, TestRepository }

@@ -1,17 +1,42 @@
 export default class Entity {
-    constructor() {
+    constructor(schema , repository) {
         if (new.target === Entity) {
             throw new Error('Cannot create an instance of Entity because it is an abstract class');
         }
+
+        this.schema = schema
+        this.repository = repository
     }
 
-    async create() {}
+    validate(object, isOptional = false) {
+        return isOptional ? this.schema.parse(object) : this.schema.optional().parse(object)
+    }
 
-    async findMany() {}
+    async create(data) {
+        this.validate(data)
 
-    async findByID() {}
+        await this.repository.create()
+    }
 
-    async update() {}
+    async findMany() {
+        data = this.repository.findMany()
 
-    async delete() {}
+        return data
+    }
+
+    async findOne(id) {
+        data = this.repository.findOne(id)
+
+        return data
+    }
+
+    async update(id , data){
+        this.validate(data , true)
+
+        await this.repository.update(id , data)
+    }
+
+    async delete(id){
+        await this.repository.delete(id)
+    }
 }

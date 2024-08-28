@@ -86,25 +86,6 @@ class ProductRepository extends Repository {
     }
 }
 
-class ProfileRepository extends Repository {
-    static #instance = undefined
-
-    constructor() {
-        super();
-
-        
-
-        if (!ProfileRepository.#instance) {
-            console.log('ProfileRepository instance created');
-            ProfileRepository.#instance = this;
-            return ProfileRepository.#instance;
-        }
-
-        throw new Error('Cannot create another instance of ProfileRepository because it is a singleton');
-        
-    }
-}
-
 class SalesManagerRepository extends Repository {
     static #instance = undefined
 
@@ -143,4 +124,4 @@ class SellerRepository extends Repository {
     }
 }
 
-export { ClientRepository, OrderRepository, ProductRepository, ProfileRepository, SalesManagerRepository, SellerRepository }
+export { ClientRepository, OrderRepository, ProductRepository, SalesManagerRepository, SellerRepository }

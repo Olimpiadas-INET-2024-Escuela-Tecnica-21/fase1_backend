@@ -19,13 +19,13 @@ export default class Entity {
     }
 
     async findMany() {
-        data = await this.repository.findMany()
+        let data = await this.repository.findMany()
 
         return data
     }
 
     async findOne(id) {
-        data = await this.repository.findOne(id)
+        let data = await this.repository.findOne(id)
 
         return data
     }

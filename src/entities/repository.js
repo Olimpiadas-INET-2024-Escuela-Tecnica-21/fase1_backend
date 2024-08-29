@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client"; 
 
-//const PRISMA = new PrismaClient();
+const PRISMA = new PrismaClient();
 
 /**
  * Repository class
@@ -15,7 +15,7 @@ class Repository {
             throw new Error('Cannot instantiate Repository class');
         }
 
-        //self.prisma = PRISMA;
+        self.prisma = PRISMA;
 
     }
 
@@ -26,16 +26,44 @@ class Repository {
         return text;
     }
 
-    
+    /**
+     * Creates a new entity in the database
+     * @async
+     * @param {Object.object} data 
+     */
     async create(data){}
 
+    /**
+     * Finds all entities in the database
+     * @async
+     * @returns {Array}
+     */
     async findMany(){}
 
+
+    /**
+     * Finds one entity in the database
+     * @async
+     * @returns {Object.object}
+     * @throws {Error('Entity not found')}
+    */
     async findOne(){}
 
-    async update(){}
+    /**
+     * Updates an entity in the database
+     * @async
+     * @param {Number} id
+     * @throws {Error('Entity not found')}
+     */
+    async update(id){}
 
-    async delete(){}
+
+    /**
+     * Deletes an entity in the database
+     * @async
+     * @param {Number} id
+     */
+    async delete(id){}
 }
 
 /**
@@ -53,6 +81,7 @@ class ClientRepository extends Repository {
         if (!ClientRepository.#instance) {
             console.log('ClientRepository instance created');
             ClientRepository.#instance = this;
+            // skipcq: JS-0109
             return ClientRepository.#instance;
         }
 
@@ -76,6 +105,7 @@ class OrderRepository extends Repository {
         if (!OrderRepository.#instance) {
             console.log('OrderRepository instance created');
             OrderRepository.#instance = this;
+            // skipcq: JS-0109
             return OrderRepository.#instance;
         }
 
@@ -99,6 +129,7 @@ class ProductRepository extends Repository {
         if (!ProductRepository.#instance) {
             console.log('ProductRepository instance created');
             ProductRepository.#instance = this;
+            // skipcq: JS-0109
             return ProductRepository.#instance;
         }
 
@@ -122,6 +153,7 @@ class SalesManagerRepository extends Repository {
         if (!SalesManagerRepository.#instance) {
             console.log('SalesManagerRepository instance created');
             SalesManagerRepository.#instance = this;
+            // skipcq: JS-0109
             return SalesManagerRepository.#instance;
         }
 
@@ -145,6 +177,7 @@ class SellerRepository extends Repository {
         if (!SellerRepository.#instance) {
             console.log('SellerRepository instance created');
             SellerRepository.#instance = this;
+            // skipcq: JS-0109
             return SellerRepository.#instance;
         }
 
@@ -168,6 +201,7 @@ class TestRepository extends Repository {
         if (!TestRepository.#instance) {
             console.log('TestRepository instance created');
             TestRepository.#instance = this;
+            // skipcq: JS-0109
             return TestRepository.#instance;
         }
 

@@ -15,7 +15,7 @@ class Repository {
             throw new Error('Cannot instantiate Repository class');
         }
 
-        self.prisma = PRISMA;
+        this.prisma = PRISMA;
 
     }
 

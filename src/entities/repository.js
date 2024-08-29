@@ -19,6 +19,7 @@ class Repository {
 
     }
 
+    // skipcq: JS-D1001
     sayHello() {
         const text = `Hello from ${Object.getPrototypeOf(this).constructor.name}`;
         console.log(text);

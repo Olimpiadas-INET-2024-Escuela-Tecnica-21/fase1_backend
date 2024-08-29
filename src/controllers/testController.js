@@ -1,13 +1,17 @@
 import TestEntity from "../entities/test.entity.js";
+import Controller from "./controller.js";
+const entity = new TestEntity()
 
-class TestController {
-    entity = new TestEntity()
-    static async sayHello(){
+class TestController extends Controller{
+    constructor(){
+        super(TestController, entity)
+    }
+    static async sayHi(){
         try{
-            TestController.entity.sayHello()
+            return entity.sayHello()
         }
         catch(error){
-            return "no se pudo xd"
+            return 'hubo error xd'
         }
     }
 }

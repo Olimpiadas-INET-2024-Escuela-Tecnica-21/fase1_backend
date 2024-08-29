@@ -9,7 +9,7 @@
 export default class Entity {
     constructor(schema , repository) {
         if (new.target === Entity) {
-            throw new Error('Cannot create an instance of Entity because it is an abstract class');
+            throw new Error('5: Cannot create an instance of Entity because it is an abstract class');
         }
 
         this.schema = schema

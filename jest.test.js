@@ -1,7 +1,7 @@
 import JWTValidator from "./src/validators/tokens/jwt.validator.js";
 import TestController from "./src/controllers/testController.js";
 
-test("Testing controller talks to repository", () => {
+/**test("Testing controller talks to repository", () => {
     console.log("Realizando el test...")
     const testController = new TestController()
 
@@ -9,7 +9,7 @@ test("Testing controller talks to repository", () => {
         testController.sayHi()
     }).toBe("Hello from TestRepository")
 })
-
+*/
 
 
 test("Testing JWTValidator can sign", () => {

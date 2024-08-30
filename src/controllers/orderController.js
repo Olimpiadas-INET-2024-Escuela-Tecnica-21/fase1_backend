@@ -16,6 +16,26 @@ class orderController extends Controller {
             res.json({msg: error.message})
         }
     }
+
+    static async downloadOrder(req, res){
+        try {
+            const order = await orderModel.findOne(req.params.id)
+            
+        } 
+        catch (error) {
+            res.json({msg: error.message})
+        }
+    }
+
+    static async checkOrder(req, res){
+        try {
+            const order = await orderModel.findOne(req.params.id)
+            
+        } 
+        catch (error) {
+            res.json({msg: error.message})
+        }
+    }
     
     static async deleteOrder(req, res){
         try {

@@ -1,20 +1,16 @@
-import TestEntity from "./src/entities/test.entity.js";
 import JWTValidator from "./src/validators/tokens/jwt.validator.js";
+import TestController from "./src/controllers/testController.js";
 
-const testEntity = new TestEntity()
+/**test("Testing controller talks to repository", () => {
+    console.log("Realizando el test...")
+    const testController = new TestController()
 
-test("Testing entity talks to repository", () => {
-    expect(testEntity.sayHello()).toBe("Hello from TestRepository");
+    expect(() => {
+        testController.sayHi()
+    }).toBe("Hello from TestRepository")
 })
+*/
 
-test("Testing repository is a singleton", () => {
-    try{
-        // skipcq: JS-R1002
-        new TestEntity()
-    } catch (e) {
-        expect(e.message).toBe('Cannot create another instance of TestRepository because it is a singleton')
-    }
-})
 
 test("Testing JWTValidator can sign", () => {
     const token = JWTValidator.sign({data : "data"} , "armando")

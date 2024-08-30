@@ -13,8 +13,8 @@ export default class Controller {
             await this.model.create(req.body)
             return res.json({ msg: `El ${Object.getPrototypeOf(this)} ha sido creado con exito!` })
         }
-        catch(error){
-            return res.json({ msg: `Ha ocurrido el siguiente error: ${error}` })
+        catch(e){
+            return this.findError(e)
         }
     }
 
@@ -23,8 +23,8 @@ export default class Controller {
             const results = await this.model.findmany()
             return res.json({ msg: `Se encontraron los siguientes resultados`, data: results })
         }
-        catch(error){
-            return res.json({ msg: `Ha ocurrido el siguiente error: ${error}` })
+        catch(e){
+            return this.findError(e)
         }
     } 
 
@@ -33,8 +33,8 @@ export default class Controller {
             const result = await this.model.findOne(req.params.id)
             return res.json({ msg: `Se encontró el siguiente ${Object.getPrototypeOf(this)}`, data: result })
         }
-        catch(error){
-            return res.json({ msg: `Ha ocurrido el siguiente error: ${error}` })
+        catch(e){
+            return this.findError(e)
         }
     }
 
@@ -43,8 +43,12 @@ export default class Controller {
             await this.model.update(req.params.id, req.body)
             return res.json({ msg: `Se ha actualizado el ${Object.getPrototypeOf(this)} exitosamente` })
         }
-        catch(error){
-            return res.json({ msg: `Ha ocurrido el siguiente error: ${error}` })
+        catch(e){
+            return this.findError(e)
         }
+    }
+
+    async findError(error, res){
+        return res.json({ msg: `El error es ${error.name}, cuyo mensaje es: ${error.message}` })
     }
 }

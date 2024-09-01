@@ -17,7 +17,7 @@ class ProductController extends Controller{
             res.json({msg: error.message})
         }
     }
-    
+
     static async deleteProduct(req, res){
         try {
             const product = await productModel.delete(req.params.id)

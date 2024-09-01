@@ -13,10 +13,11 @@ class clientController extends Controller{
 
     async register(req, res){
         //const {username, email, password, address} = req.body
+        const client = await this.create(req)
         if(client.password == req.body.repeatPassword){
-            const client = await this.create(req)
             const clientKey = await Validator.createAuthToken({...client, isSeller: false}, process.env.CLIENT_TOKEN_KEY)
-            res.cookie("client", clientKey)
+            res.set("Authorization", clientKey)
+            res.setHeader("Authorization", clientKey)
             return res.json(client)
         }
         else{
@@ -31,7 +32,8 @@ class clientController extends Controller{
 
         if(client.email == req.body.email && client.password == req.body.password){
             const clientKey = await Validator.createAuthToken({...client, isSeller: false}, process.env.CLIENT_TOKEN_KEY)
-            res.cookie("client", clientKey)
+            res.set("Authorization", clientKey)
+            res.setHeader("Authorization", clientKey)
             return res.json(client)
         }
         else{
@@ -41,7 +43,7 @@ class clientController extends Controller{
     }
 
     async logout(req, res){
-        res.cookie('client', '', {
+        res.set('client', '', {
           expires: new Date(0), 
         })
         return res.json({message : "cerraste tu cuenta"})

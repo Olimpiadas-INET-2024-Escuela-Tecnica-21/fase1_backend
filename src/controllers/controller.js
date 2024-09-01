@@ -1,21 +1,25 @@
 export default class Controller {
-    constructor(controller, model) {
+    constructor(/*controller,*/ model) {
         if (new.target === Controller) {
             throw new Error('5: Cannot create an instance of Controller because it is an abstract class');
         }
 
-        this.controller = controller
+        //this.controller = controller
         this.model = model
     }
 
-    async create(req, res){
-        try{
-            await this.model.create(req.body)
-            return res.json({ msg: `El ${Object.getPrototypeOf(this)} ha sido creado con exito!` })
-        }
-        catch(error){
-            return res.json({ msg: `Ha ocurrido el siguiente error: ${error}` })
-        }
+    async create(req){
+
+        const entity = await this.model.create(req.body)
+        return entity
+
+        // try{
+        //     await this.model.create(req.body)
+        //     return res.json({ msg: `El ${Object.getPrototypeOf(this)} ha sido creado con exito!` })
+        // }
+        // catch(error){
+        //     return res.json({ msg: `Ha ocurrido el siguiente error: ${error}` })
+        // }
     }
 
     async find(req, res){

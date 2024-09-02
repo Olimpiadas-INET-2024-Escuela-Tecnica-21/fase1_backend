@@ -6,20 +6,14 @@
      * @property {Object} repository - Repository to handle the data
     */
 export default class Entity {
-    constructor(schema , repository) {
-        if (new.target === Entity) {
-            throw new Error('5: Cannot create an instance of Entity because it is an abstract class');
-        }
-
-        this.schema = schema
-        this.repository = new repository()
-    }
+    static schema
+    static repository
 
     /** 
         * Method to say hello. for testing purposes
     */
-    sayHello() {
-        return this.repository.sayHello()
+    static sayHello() {
+        return Entity.repository.sayHello()
     }
 
     /** 
@@ -53,8 +47,8 @@ export default class Entity {
         * @returns {Array} - Array of entities
         * @throws {Error} - If the repository throws an error
     */
-    async findMany() {
-        const data = await this.repository.findMany()
+    async findMany(offset = 0) {
+        const data = await this.repository.findMany(offset)
 
         return data
     }

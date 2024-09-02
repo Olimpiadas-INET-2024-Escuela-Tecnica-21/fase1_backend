@@ -60,18 +60,6 @@ export default class JWTValidator {
    * @returns {String.Base64}
    */
   static createAuthToken(data, key) {
-    if (!data?.isSeller) {
-      throw new Error("5: isSeller is required")
-    }
-
-    if (typeof data.isSeller !== "boolean") {
-      throw new Error("5: isSeller must be a boolean")
-    }
-
-    if (Object.keys(data).length !== 1) {
-      throw new Error("5: Only isSeller is allowed")
-    }
-
     return JWTValidator.sign(data, key)
   }
 

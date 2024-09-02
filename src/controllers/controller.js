@@ -1,12 +1,21 @@
-export default class Controller {
-    constructor(model) {
-        if (new.target === Controller) {
-            throw new Error('5: Cannot create an instance of Controller because it is an abstract class');
-        }
 
-        //this.controller = controller
-        this.model = model
+/**
+ * Abstract class that defines the basic methods for a controller
+ * @class @abstract
+ * @property {Entity} model - Model to handle the data
+ */
+export default class Controller {
+    model
+
+
+    /**
+     * A test method to say hello
+     * @returns {String} - A greeting
+     */
+    static sayHello(){
+        return Controller.model.sayHello()
     }
+
 
     async create(req){
 
@@ -22,24 +31,21 @@ export default class Controller {
         // }
     }
 
-    async find(req, res){
-        try{
-            const results = await this.model.findmany()
-            return res.json({ msg: `Se encontraron los siguientes resultados`, data: results })
-        }
-        catch(e){
-            return this.findError(e)
-        }
+    async find(offset = 0){
+        const data = await this.model.findMany(offset)
+
+        return data
     } 
 
-    async findById(req, res){
-        try{
-            const result = await this.model.findOne(req.params.id)
-            return res.json({ msg: `Se encontró el siguiente ${Object.getPrototypeOf(this)}`, data: result })
-        }
-        catch(e){
-            return this.findError(e)
-        }
+    /**
+     * Found a specific entity by id
+     * @param {Number} id 
+     * @returns 
+     */
+    async findById(id){
+        const data = await this.model.findOne(id)
+
+        return data
     }
 
     async update(req, res){
@@ -52,7 +58,15 @@ export default class Controller {
         }
     }
 
-    async findError(error, res){
-        return res.json({ msg: `El error es ${error.name}, cuyo mensaje es: ${error.message}` })
+    /**
+     * 
+     * @param {String} error 
+     * @param {import("express").Response} res 
+     * @returns 
+     */
+    static findError(error, res){
+        error = error.split(":")
+        const status = error[0]
+        res.status(status).json({ msg: `Ha ocurrido el siguiente error: ${error[1]}` })
     }
 }

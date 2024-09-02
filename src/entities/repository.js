@@ -9,18 +9,10 @@ const PRISMA = new PrismaClient();
  */
 class Repository {
     static #instance = undefined
-
-    constructor() {
-        if (new.target === Repository) {
-            throw new Error('Cannot instantiate Repository class');
-        }
-
-        this.prisma = PRISMA;
-
-    }
+    static prisma = PRISMA
 
     // skipcq: JS-D1001
-    sayHello() {
+    static sayHello() {
         const text = `Hello from ${Object.getPrototypeOf(this).constructor.name}`;
         console.log(text);
         return text;
@@ -29,32 +21,38 @@ class Repository {
     /**
      * Creates a new entity in the database
      * @async
-     * @param {Object.object} data 
+     * @param {Object.object} data
+     * @returns {Object.object}
      */
+    // skipcq: JS-0105, JS-0128, JS-0057
     async create(data){}
 
     /**
      * Finds all entities in the database
      * @async
+     * @param {Number} offset
      * @returns {Array}
      */
-    async findMany(){}
+    // skipcq: JS-0105, JS-0128, JS-0057
+    async findMany(offset){}
 
 
     /**
      * Finds one entity in the database
      * @async
+     * @param {Number} id
      * @returns {Object.object}
-     * @throws {Error('Entity not found')}
     */
-    async findOne(){}
+   // skipcq: JS-0105, JS-0128, JS-0057
+    async findOne(id){}
 
     /**
      * Updates an entity in the database
      * @async
-     * @param {Number} id
+     * @param {Object.object} data
      * @throws {Error('Entity not found')}
      */
+    // skipcq: JS-0105, JS-0128, JS-0057
     async update(id){}
 
 
@@ -63,6 +61,7 @@ class Repository {
      * @async
      * @param {Number} id
      */
+    // skipcq: JS-0105, JS-0128, JS-0057
     async delete(id){}
 }
 
@@ -85,7 +84,7 @@ class ClientRepository extends Repository {
             return ClientRepository.#instance;
         }
 
-        throw new Error('Cannot create another instance of ClientRepository because it is a singleton');
+        throw new Error('500:Cannot create another instance of ClientRepository because it is a singleton');
         
     }
 }
@@ -109,7 +108,7 @@ class OrderRepository extends Repository {
             return OrderRepository.#instance;
         }
 
-        throw new Error('Cannot create another instance of OrderRepository because it is a singleton');
+        throw new Error('500:Cannot create another instance of OrderRepository because it is a singleton');
         
     }
 }
@@ -133,7 +132,7 @@ class ProductRepository extends Repository {
             return ProductRepository.#instance;
         }
 
-        throw new Error('Cannot create another instance of ProductRepository because it is a singleton');
+        throw new Error('500:Cannot create another instance of ProductRepository because it is a singleton');
         
     }
 }
@@ -157,7 +156,7 @@ class SalesManagerRepository extends Repository {
             return SalesManagerRepository.#instance;
         }
 
-        throw new Error('Cannot create another instance of SalesManagerRepository because it is a singleton');
+        throw new Error('500:Cannot create another instance of SalesManagerRepository because it is a singleton');
         
     }
 }
@@ -181,7 +180,7 @@ class SellerRepository extends Repository {
             return SellerRepository.#instance;
         }
 
-        throw new Error('Cannot create another instance of SellerRepository because it is a singleton');
+        throw new Error('500:Cannot create another instance of SellerRepository because it is a singleton');
         
     }
 }
@@ -205,7 +204,7 @@ class TestRepository extends Repository {
             return TestRepository.#instance;
         }
 
-        throw new Error('Cannot create another instance of TestRepository because it is a singleton');
+        throw new Error('500:Cannot create another instance of TestRepository because it is a singleton');
         
     }
 }

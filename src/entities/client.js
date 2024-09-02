@@ -4,9 +4,8 @@ import { ClientRepository } from "./repository.js"
 
 // skipcq: JS-D1001
 class ClientModel extends Entity {
-    constructor() {
-        super(clientRegisterSchema , ClientRepository)
-    }
+    static schema = clientRegisterSchema
+    static repository = ClientRepository
 }
 
 export default ClientModel

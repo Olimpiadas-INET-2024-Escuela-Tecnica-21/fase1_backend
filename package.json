@@ -1,10 +1,20 @@
 {
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "run" :"node --experimental-vm-modules src/interface/index.js"
+  },
   "dependencies": {
-    "cookieparser": "^0.1.0",
+    "@prisma/client": "^5.19.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.19.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "jest": "^29.7.0"
   }
 }

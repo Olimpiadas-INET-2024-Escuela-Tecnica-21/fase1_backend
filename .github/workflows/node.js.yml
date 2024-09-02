@@ -27,6 +27,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Construccion del proyecto
-      run: npm run build --if-present #esto es para construir el proyecto, ejemplo <npm i> y otros comandos
+      run: npm i && npm i --dev #esto es para construir el proyecto, ejemplo <npm i> y otros comandos
     - name: Correr Pruebas
       run: npm test

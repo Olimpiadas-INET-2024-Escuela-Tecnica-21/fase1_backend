@@ -8,7 +8,7 @@ const modeloCliente = new ClientModel()
 class clientController extends Controller{
 
     constructor(){
-        super(clientController, modeloCliente)
+        super(modeloCliente)
     }
 
     async register(req, res){
@@ -59,7 +59,7 @@ class clientController extends Controller{
         const client = await this.findById(req)
         const clientKey = await Validator.createAuthToken({...client, isSeller: false}, process.env.CLIENT_TOKEN_KEY)
 
-        if(res.cookie != null && Validator.verify(res.cookie, clientKey).id == client.id){
+        if(res.cookie != null && Validator.verify(res.cookie, clientKey).id == client.id){  //Duda, porque se usa el res y no el req?
 
             return res.json({message : "cuenta cliente validada"})
 

@@ -1,5 +1,5 @@
 export default class Controller {
-    constructor(/*controller,*/ model) {
+    constructor(model) {
         if (new.target === Controller) {
             throw new Error('5: Cannot create an instance of Controller because it is an abstract class');
         }

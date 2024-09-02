@@ -1,4 +1,3 @@
-
 /** 
      * Abstract class that represents an entity,
      * responsible for the CRUD operations

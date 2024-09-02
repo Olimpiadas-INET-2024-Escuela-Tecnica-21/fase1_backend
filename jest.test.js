@@ -1,5 +1,16 @@
 import JWTValidator from "./src/validators/tokens/jwt.validator.js";
+import TestController from "./src/controllers/testController.js";
 
+test("Testing controller talks to repository", () => {
+    console.log("Realizando el test...")
+    const testController = new TestController()
+
+    expect(() => {
+        testController.sayHi()
+    }).toBe("Hello from TestRepository")
+})
+
+27-crear-routers-de-cliente
 test("Testing JWTValidator can sign", () => {
     const token = JWTValidator.sign({data : "data"} , "armando")
 

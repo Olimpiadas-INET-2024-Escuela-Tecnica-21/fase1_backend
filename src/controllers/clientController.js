@@ -1,9 +1,7 @@
-import ClientModel from '../entities/client.js'
 import Controller from './controller.js'
 import Validator from '../validators/tokens/jwt.validator.js'
-
+import client from "../entities/client.js";
 class clientController extends Controller{
-    model = ClientModel
 
     /**
      * A test method to say hello from the controller
@@ -11,8 +9,8 @@ class clientController extends Controller{
      * @param {import('express').Request} req 
      */
     static sayHelloResponse(req , res){
-        
-        res.json({msg : this.sayHello()})
+        console.log(req)
+        res.json({msg : "HOLA "+req.user.nombre})
     }
 
     /**
@@ -32,25 +30,8 @@ class clientController extends Controller{
      * @returns 
      */
     static async findClient(req, res){
-        try{
-            if (this.checkQuery(req)){
-                throw new Error("400:Revise su solicitud")
-            }
-
-            if (req.query.id){
-                res.json(await this.findById(req.query.id))
-                return
-            }
-            else {
-                res.json(await this.find(req.query?.offset||0))
-                return
-            }
-            
-        }
-        catch(e){
-            clientController.findError(e.message  , res)
-            
-        }
+        const client = await client.findById(req.user.id)
+        res.json(client)
     }
 
 
@@ -61,41 +42,47 @@ class clientController extends Controller{
      */
     static async register(req, res){
         try{
-            const client = await this.create(req)
-
+            const clientReturned = await client.create(req)
             const clientKey = await Validator.createAuthToken({id : client.id,
-                                                               profile : client.profile},
-                                                               process.env.CLIENT_TOKEN_KEY
-                                                            )
-            res.set("Authorization", clientKey)
-            res.setHeader("Authorization", clientKey)
-            res.json(client)
+               profile : client.profile},
+               process.env.CLIENT_TOKEN_KEY
+            )
+            clientReturned.token = clientKey
+            res.json(clientReturned)
         }catch(e){
             clientController.findError(e.message , res)
         }
     }
 
     static async login(req, res){
-        //const {username, email, password, address} = req.body
-        const client = await this.findById(req)
 
-        if(client.email == req.body.email && client.password == req.body.password){
+        const client = await Validator.createAuthToken({id: 123,nombre:"ezequiel"}, "123")
+        return res.json(client)
+
+
+        /*
+        const {username, password} = req.body
+
+
+        const client = await client.find(
+            where : {
+                username : username,
+                password : password
+            }
+        )
+
+        if(client){
             const clientKey = await Validator.createAuthToken({...client, isSeller: false}, process.env.CLIENT_TOKEN_KEY)
-            res.set("Authorization", clientKey)
-            res.setHeader("Authorization", clientKey)
+            clientReturned.token = clientKey
             return res.json(client)
         }
         else{
             return res.json({message : "contrasenia incorrecta"})
         } 
 
-    }
 
-    static async logout(req, res){
-        res.set('client', '', {
-          expires: new Date(0), 
-        })
-        return res.json({message : "cerraste tu cuenta"})
+
+         */
     }
 
     static async view(req, res){

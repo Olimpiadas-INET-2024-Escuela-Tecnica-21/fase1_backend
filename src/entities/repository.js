@@ -210,4 +210,4 @@ class TestRepository extends Repository {
     }
 }
 
-export { ClientRepository, OrderRepository, ProductRepository, SalesManagerRepository, SellerRepository, TestRepository }
+export default Repository

@@ -1,11 +1,19 @@
-import Cookie from 'cookie-parser'
-import Express from 'express'
-import Cors from 'cors'
+import express from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors"
+import { mainLogger } from "../middlewares/req.logger.js";
+import clientRouter from "./routes/client.routes.js";
 
-const app = Express()
-app.use(Cookie())
-app.use(Cors())
-app.listen(process.env.TOKEN)
+const app = express();
 
+app.use(cors());
+app.use(cookieParser());
+// skipcq: JS-P1003
+app.use(express.json());
+app.use(mainLogger);
 
+app.use("/client", clientRouter);
 
+app.listen(process.env.PORT || 3000 , () => {
+    console.log("Server is running on port 3000");
+})

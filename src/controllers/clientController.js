@@ -1,6 +1,11 @@
 import Controller from './controller.js'
 import Validator from '../validators/tokens/jwt.validator.js'
-import client from "../entities/client.js";
+
+/**
+ * A controller for the client entity
+ * @extends Controller
+ * @property {ClientModel} model
+ */
 class clientController extends Controller{
 
     /**

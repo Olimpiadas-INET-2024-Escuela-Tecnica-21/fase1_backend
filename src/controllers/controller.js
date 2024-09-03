@@ -5,7 +5,6 @@
  * @property {Entity} model - Model to handle the data
  */
 export default class Controller {
-    model
 
 
     /**
@@ -13,7 +12,7 @@ export default class Controller {
      * @returns {String} - A greeting
      */
     static sayHello(){
-        return Controller.model.sayHello()
+        return "HOLA SOY UN CONTROLADOR"
     }
 
 

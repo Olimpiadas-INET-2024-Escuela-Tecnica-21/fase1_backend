@@ -4,15 +4,13 @@ import { ClientRepository } from "./repository.js"
 
 // skipcq: JS-D1001
 class ClientModel extends Entity {
-    static schema = clientRegisterSchema
-    static repository = ClientRepository
 
     /**
      * A test method to say hello from the model
      * @returns {string} - A greeting
      */
     static sayHello() {
-        return ClientModel.repository.sayHello()
+        return ClientRepository.sayHello()
     }
 
     /**
@@ -23,7 +21,7 @@ class ClientModel extends Entity {
      * @throws {Error} - If the repository throws an error
      */
     static async find(obj){
-        const clients = await ClientModel.repository.find(obj)
+        const clients = await ClientRepository.find(obj)
         return clients
     }
 
@@ -35,7 +33,8 @@ class ClientModel extends Entity {
      * @throws {Error} - If the object is not valid
      */
     static validate(object, isOptional = false) {
-        return isOptional ? this.schema.parse(object) : this.schema.optional().parse(object)
+        console.log("validating")
+        return isOptional ? clientRegisterSchema.optional(object) : clientRegisterSchema.parse(object)
     }
 
     /**
@@ -49,11 +48,37 @@ class ClientModel extends Entity {
     static async create(data) {
         ClientModel.validate(data)
 
-        const client = await ClientModel.repository.create(data)
+        const client = await ClientRepository.create(data)
         return client
     }
 
-    // crear acá update y delete
+
+    /**
+     * Update a client
+     * @async
+     * @param {number} id 
+     * @param {object} obj
+     * @throws {Error} - If the data is not valid
+     * @throws {Error} - If the repository throws an error
+     * @returns {object} - The updated client
+     */
+    static async update(obj) {
+        ClientModel.validate(obj.data, true)
+
+        const updatedClient = await ClientRepository.update(obj.data)
+
+        return updatedClient
+    }
+
+    /**
+     * Delete a client
+     * @async
+     * @param {object} obj
+     * @throws {Error} - If the repository throws an error
+     */
+    static async delete(obj) {
+        await ClientRepository.delete(obj)
+    }
 }
 
 export default ClientModel

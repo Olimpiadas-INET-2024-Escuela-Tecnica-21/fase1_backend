@@ -17,6 +17,7 @@ function auth(req, res, next , key){
         const token = authorizationToken.replace("Bearer: ", "");
         const decoded = JWTValidator.verify(token, key);
         req.user = decoded;
+        console.log("User authenticated");
         next();
     } catch (error) {
         res.status(400).send("Invalid token");

@@ -13,12 +13,12 @@ clientRouter.post("/register" , ClientController.register)
 
 clientRouter.put("/login" , ClientController.login)
 
-clientRouter.post("/update:id" , (req , res , next) => {
+clientRouter.post("/update/:id" , (req , res , next) => {
                                 auth(req, res , next , process.env.CLIENT_TOKEN_KEY)},
                                 ClientController.updateClient
 )
 
-clientRouter.delete("/delete:id" , (req , res , next) => {
+clientRouter.delete("/delete/:id" , (req , res , next) => {
                                 auth(req, res , next , process.env.CLIENT_TOKEN_KEY)},
                                 ClientController.deleteClient
 )

@@ -65,17 +65,46 @@ class ClientRepository extends Repository {
     static prisma = PRISMA
     /**
      * A test method to say hello from the repository
-     * @returns {String} - A greeting
+     * @returns {string} - A greeting
      */
     static sayHello() {
         return 'Hello from ClientRepository';
     }
 
+    /**
+     * Method to find one or many clients
+     * @async
+     * @param {object} obj 
+     * @returns 
+     */
     static async find(obj){
         // mientras tanto...
         // el objeto tiene que tener un where y un limit
         // si tiene id, prisma.findOne
         // si tiene where, prisma.findMany
+
+        return obj
+    }
+
+    /**
+     * Method to update a client
+     * @async
+     * @param {object} obj
+     * @returns {object} - The updated client
+     */
+    static async update(obj){
+        // prisma.update
+
+        return obj
+    }
+
+    /**
+     * Method to delete a client
+     * @param {object} obj 
+     * @returns {object} - The deleted client
+     */
+    static async delete(obj){
+        // prisma.delete
 
         return obj
     }

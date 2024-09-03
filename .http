@@ -6,4 +6,42 @@ GET http://localhost:3000/client HTTP/1.1
 
 #######
 
+GET http://localhost:3000/client?id=1&offset=1 HTTP/1.1
+
+#######
+
+GET http://localhost:3000/client?id=1&offset=0 HTTP/1.1
+
+
+#######
+
+GET http://localhost:3000/client?id=1 HTTP/1.1
+
+#######
+
 PUT http://localhost:3000/client/login HTTP/1.1
+
+#######
+
+PUT http://localhost:3000/client/login HTTP/1.1
+Authorization: Bearer: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBaQ0k2TUN3aWNISnZabWxzWlNJNklpSXNJbWxoZENJNk1UY3lOVE0yT0RFek1uMC50QnFReU0wNlZ5ZWE3NV9TUGFZcG9SdzhGNTEtTzdsQVpqUHZVa3BkTG80
+
+#######
+
+POST http://localhost:3000/client/register HTTP/1.1
+
+
+#######
+
+POST http://localhost:3000/client/update/1 HTTP/1.1
+Authorization: Bearer: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBaQ0k2TUN3aWNISnZabWxzWlNJNklpSXNJbWxoZENJNk1UY3lOVE0yT0RFek1uMC50QnFReU0wNlZ5ZWE3NV9TUGFZcG9SdzhGNTEtTzdsQVpqUHZVa3BkTG80
+Content-Type: application/json
+
+{
+    "username": "test"
+}
+
+#######
+
+DELETE http://localhost:3000/client/delete/1 HTTP/1.1
+Authorization: Bearer: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBaQ0k2TUN3aWNISnZabWxzWlNJNklpSXNJbWxoZENJNk1UY3lOVE0yT0RFek1uMC50QnFReU0wNlZ5ZWE3NV9TUGFZcG9SdzhGNTEtTzdsQVpqUHZVa3BkTG80

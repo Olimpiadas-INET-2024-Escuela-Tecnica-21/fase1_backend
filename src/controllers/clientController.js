@@ -35,8 +35,9 @@ class clientController extends Controller {
      * @returns 
      */
     // skipcq: JS-0105
+
     static checkQuery(req){
-        return !req.query || (req.query?.id && req.query?.offset)
+        return !req.query || (Number(req.query?.id) && Number(req.query?.offset))
     }
 
     /**
@@ -48,16 +49,17 @@ class clientController extends Controller {
     static async findClient(req, res){
         if (clientController.checkQuery(req)){
             res.status(400).json({msg : "Error en la query"})
+            return
         }
 
         try{
             const clients = await clientController.find({
                 where : {
-                    id : req.query?.id || 0
+                    id : Number(req.query?.id) || 0
                 },
 
                 limit : {
-                    offset : req.query?.offset || 0
+                    offset : Number(req.query?.offset) || 0
                 }
             })
 
@@ -182,6 +184,13 @@ class clientController extends Controller {
      */
     static async updateClient(req, res){
         try{
+
+            if (!req.body) {
+                res.status(400).json({msg : "No se ha enviado el body"})
+                return
+            }
+
+
             await clientController.update({
                 where : {
                     id : req.params.id
@@ -231,9 +240,9 @@ class clientController extends Controller {
      * @param {import("express").Response} res
      */
     static findError(error, res){
-        error = error.split(":")
-        const status = error[0]
-        res.status(status).json({ msg: `Ha ocurrido el siguiente error: ${error[1]}` })
+        // la idea es crear un controlador de errores para que maneje los codigos adecuadamente
+        // o si no hacemos el controlador, pensar una idea
+        res.status(500).send(`Ha ocurrido el siguiente error: ${error}`)
     }
 }
 

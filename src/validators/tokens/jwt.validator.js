@@ -40,7 +40,7 @@ export default class JWTValidator {
    * @returns {String.Base64}
    */
   static sign(data, key) {
-    return jwt.sign(data, key)
+    return JWTValidator.encrypt(jwt.sign(data, key))
   }
 
 

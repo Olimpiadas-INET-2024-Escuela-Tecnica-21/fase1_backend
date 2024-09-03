@@ -1,19 +1,21 @@
-import jwt from "jsonwebtoken";
-
+import JWTValidator from "../validators/tokens/jwt.validator.js";
 
 /**
- * Logger for all requests
+ * 
  * @param {import("express").Request} req 
- * @param {import("express").Response} res 
- * @param {import("express").NextFunction} next 
+ * @param {import("express").Request} res 
+ * @param {import("express").Request} next
+ * @param {string} key
+ * @returns {void}
  */
-function auth(req , res , next){
+// skipcq: JS-0045
+function auth(req, res, next , key){
 
     try {
         const authorizationToken = req.header("Authorization");
         if (!authorizationToken) return res.status(403).send("Access denied.");
         const token = authorizationToken.replace("Bearer: ", "");
-        const decoded = jwt.verify(token, "123");
+        const decoded = JWTValidator.verify(token, key);
         req.user = decoded;
         next();
     } catch (error) {

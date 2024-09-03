@@ -8,19 +8,18 @@ const PRISMA = new PrismaClient();
  * @property {Object} prisma - Prisma client
  */
 class Repository {
-    static #instance = undefined
-    static prisma = PRISMA
-
-    // skipcq: JS-D1001
+    /**
+     * A test method to say hello
+     * @override
+     */
+    // skipcq: JS-0105, JS-0128, JS-0057
     static sayHello() {
-        const text = `Hello from ${Object.getPrototypeOf(this).constructor.name}`;
-        console.log(text);
-        return text;
     }
 
     /**
      * Creates a new entity in the database
      * @async
+     * @override
      * @param {Object.object} data
      * @returns {Object.object}
      */
@@ -30,25 +29,17 @@ class Repository {
     /**
      * Finds all entities in the database
      * @async
-     * @param {Number} offset
-     * @returns {Array}
+     * @override
+     * @param {object} obj
+     * @returns {Array|object}
      */
     // skipcq: JS-0105, JS-0128, JS-0057
-    async findMany(offset){}
-
-
-    /**
-     * Finds one entity in the database
-     * @async
-     * @param {Number} id
-     * @returns {Object.object}
-    */
-   // skipcq: JS-0105, JS-0128, JS-0057
-    async findOne(id){}
+    async find(obj){}
 
     /**
      * Updates an entity in the database
      * @async
+     * @override
      * @param {Object.object} data
      * @throws {Error('Entity not found')}
      */
@@ -59,6 +50,7 @@ class Repository {
     /**
      * Deletes an entity in the database
      * @async
+     * @override
      * @param {Number} id
      */
     // skipcq: JS-0105, JS-0128, JS-0057
@@ -70,24 +62,25 @@ class Repository {
  * @extends Repository
  */
 class ClientRepository extends Repository {
-    static #instance = undefined
+    static prisma = PRISMA
+    /**
+     * A test method to say hello from the repository
+     * @returns {String} - A greeting
+     */
+    static sayHello() {
+        return 'Hello from ClientRepository';
+    }
 
-    constructor() {
-        super();
+    static async find(obj){
+        // mientras tanto...
+        // el objeto tiene que tener un where y un limit
+        // si tiene id, prisma.findOne
+        // si tiene where, prisma.findMany
 
-        
-
-        if (!ClientRepository.#instance) {
-            console.log('ClientRepository instance created');
-            ClientRepository.#instance = this;
-            // skipcq: JS-0109
-            return ClientRepository.#instance;
-        }
-
-        throw new Error('500:Cannot create another instance of ClientRepository because it is a singleton');
-        
+        return obj
     }
 }
+
 
 /**
  * OrderRepository class, its responsible for handling the order data

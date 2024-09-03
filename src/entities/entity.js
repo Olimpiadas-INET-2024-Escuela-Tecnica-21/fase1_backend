@@ -6,25 +6,23 @@
      * @property {Object} repository - Repository to handle the data
     */
 export default class Entity {
-    static schema
-    static repository
-
     /** 
         * Method to say hello. for testing purposes
+        * @returns {string} - A greeting
     */
+    // skipcq: JS-0057
     static sayHello() {
-        return Entity.repository.sayHello()
     }
 
     /** 
         * Validation method, uses the schema to validate the object
-        * @param {Object} object - Object to be validated
+        * @param {object} object - Object to be validated
         * @param {Boolean} isOptional - If the object is optional
-        * @returns {Object} - The validated object
+        * @returns {object} - The validated object
         * @throws {Error} - If the object is not valid
     */
-    validate(object, isOptional = false) {
-        return isOptional ? this.schema.parse(object) : this.schema.optional().parse(object)
+    // skipcq: JS-0128, JS-0057
+    static validate(object, isOptional = false) {
     }
 
     /** 
@@ -34,36 +32,18 @@ export default class Entity {
         * @throws {Error} - If the data is not valid
         * @throws {Error} - If the repository throws an error
     */
-    async create(data) {
-        this.validate(data)
-
-        await this.repository.create()
+    // skipcq: JS-0057, JS-0128
+    static async create(data) {
     }
 
-
-    /** 
-        * Find all entities
-        * @async
-        * @returns {Array} - Array of entities
-        * @throws {Error} - If the repository throws an error
+    /**
+     * Find one or many entities
+     * @async
+     * @param {Object} obj - Object to be found
+     * @returns {Object|Array} - The found entity
     */
-    async findMany(offset = 0) {
-        const data = await this.repository.findMany(offset)
-
-        return data
-    }
-
-    /** 
-         * Find one entity
-         * @async
-         * @param {String} id - Id of the entity
-         * @returns {Object} - The entity
-         * @throws {Error} - If the repository throws an error
-    */
-    async findOne(id) {
-        const data = await this.repository.findOne(id)
-
-        return data
+    // skipcq: JS-0128, JS-0057
+    static async find(obj){
     }
 
     /** 

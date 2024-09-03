@@ -1,12 +1,13 @@
 import Controller from './controller.js'
 import Validator from '../validators/tokens/jwt.validator.js'
+import Client from '../entities/client.js'
 
 /**
  * A controller for the client entity
  * @extends Controller
  * @property {ClientModel} model
  */
-class clientController extends Controller{
+class clientController extends Controller {
 
     /**
      * A test method to say hello from the controller
@@ -14,8 +15,18 @@ class clientController extends Controller{
      * @param {import('express').Request} req 
      */
     static sayHelloResponse(req , res){
-        console.log(req)
-        res.json({msg : "HOLA "+req.user.nombre})
+        res.json({msg : Client.sayHello()})
+    }
+
+    /**
+     * Finds one or many clients
+     * @param {object} obj - Data to be created
+     * @returns {object|Array} - The created client
+    */
+    static async find(obj){
+        const clients = await Client.find(obj)
+
+        return clients
     }
 
     /**
@@ -25,7 +36,7 @@ class clientController extends Controller{
      */
     // skipcq: JS-0105
     static checkQuery(req){
-        return !req.query || (req.query.id && req.query.offset)
+        return !req.query || (req.query?.id && req.query?.offset)
     }
 
     /**
@@ -35,10 +46,26 @@ class clientController extends Controller{
      * @returns 
      */
     static async findClient(req, res){
-        const client = await client.findById(req.user.id)
-        res.json(client)
-    }
+        if (clientController.checkQuery(req)){
+            res.status(400).json({msg : "Error en la query"})
+        }
 
+        try{
+            const clients = await clientController.find({
+                where : {
+                    id : req.query?.id || 0
+                },
+
+                limit : {
+                    offset : req.query?.offset || 0
+                }
+            })
+
+            res.json(clients)
+        } catch(e){
+            clientController.findError(e.message , res)
+        }
+    }
 
     /**
      * Use case to create a new client
@@ -47,72 +74,167 @@ class clientController extends Controller{
      */
     static async register(req, res){
         try{
-            const clientReturned = await client.create(req)
-            const clientKey = await Validator.createAuthToken({id : client.id,
-               profile : client.profile},
-               process.env.CLIENT_TOKEN_KEY
+            const existentClient = await Client.find({
+                where : {
+                    username : req.body.username
+                }
+            })
+
+            if (existentClient){
+                res.status(400).json({msg : "El cliente ya existe"})
+                return
+            }
+
+            const clientReturned = await Client.create(req.body)
+
+            const clientKey = await Validator.createAuthToken(
+                {id : clientReturned.id,
+                profile : clientReturned.profile},
+                process.env.CLIENT_TOKEN_KEY
             )
+
             clientReturned.token = clientKey
+
             res.json(clientReturned)
+
         }catch(e){
             clientController.findError(e.message , res)
         }
     }
 
+    /**
+     * Validate if a token was given
+     * @param {import('express').Request} req
+     * @returns {string}
+     */
+    static validateIfTokenGiven(req){
+        const header = req.header("Authorization")
+
+        if (!header){
+            return null
+        }
+
+        const token = header.replace("Bearer: ", "")
+        return Validator.verify(token, process.env.CLIENT_TOKEN_KEY)
+    }
+
+    /**
+     * Use case to login a client
+     * @async
+     * @param {import('express').Request} req
+     * @param {import('express').Response} res
+    */
     static async login(req, res){
+        try{
 
-        const client = await Validator.createAuthToken({id: 123,nombre:"ezequiel"}, "123")
-        return res.json(client)
+            let token = clientController.validateIfTokenGiven(req)
+            
+            // cambiar a const
+            let clientReturned = await Client.find({
+                where : {
+                    id : token?.id || 0,
+                    profile : token?.profile || "",
+                    username : req.body?.username || "",
+                    password : req.body?.password || ""
+                }
+            })
 
+            // solo para hacer pruebas haré esto
+            console.log(`Token Received: ${token}`)
+            console.log("Client Returned: ", clientReturned)
+            console.log("Key: ", process.env.CLIENT_TOKEN_KEY)
 
-        /*
-        const {username, password} = req.body
-
-
-        const client = await client.find(
-            where : {
-                username : username,
-                password : password
+            
+            clientReturned = clientReturned.where
+            // fin de la porqueria
+            
+            if (!clientReturned){
+                res.status(400).json({msg : "El cliente no existe"})
+                return
             }
-        )
 
-        if(client){
-            const clientKey = await Validator.createAuthToken({...client, isSeller: false}, process.env.CLIENT_TOKEN_KEY)
-            clientReturned.token = clientKey
-            return res.json(client)
+            token = Validator.createAuthToken({
+                id : clientReturned.id,
+                profile : clientReturned.profile
+            }, process.env.CLIENT_TOKEN_KEY)
+            
+            res.json(token)
+        } catch(e){
+            clientController.findError(e.message , res)
         }
-        else{
-            return res.json({message : "contrasenia incorrecta"})
-        } 
-
-
-
-         */
     }
 
-    static async view(req, res){
-        
-        return res.json(client)
+
+    /**
+     * Update a client
+     * @param {object} obj
+     * @returns {object}
+     */
+    static async update(obj){
+        const client = await Client.update(obj)
+        return client
     }
 
-    static async validate(req, res){
+    /**
+     * Use case to update a client
+     * @param {import('express').Request} req 
+     * @param {import('express').Response} res 
+     */
+    static async updateClient(req, res){
+        try{
+            await clientController.update({
+                where : {
+                    id : req.params.id
+                },
 
-        const client = await this.findById(req)
-        const clientKey = await Validator.createAuthToken({...client, isSeller: false}, process.env.CLIENT_TOKEN_KEY)
+                data : req.body
+            })
 
-        if(res.cookie != null && Validator.verify(res.cookie, clientKey).id == client.id){  //Duda, porque se usa el res y no el req?
-
-            return res.json({message : "cuenta cliente validada"})
-
+            res.json({msg : "Se ha actualizado el cliente exitosamente"})
+        } catch(e){
+            clientController.findError(e.message , res)
         }
-        else{
-
-            return res.json({message : "cuenta cliente no validada"})
-
-        }
-        
     }
 
+    /**
+     * Delete a client
+     * @param {object} obj
+     */
+
+    static async delete(obj){
+        await Client.delete(obj)
+    }
+
+    /**
+     * Use case to delete a client
+     * @param {import('express').Request} req
+     * @param {import('express').Response}
+     * @returns
+     */
+    static async deleteClient(req, res){
+        try{
+            await clientController.delete({
+                where : {
+                    id : req.params.id
+                }
+            })
+
+            res.json({msg : "Se ha eliminado el cliente exitosamente"})
+        } catch(e){
+            clientController.findError(e.message , res)
+        }
+    }
+
+    /**
+     * Response for an error
+     * @param {string} error
+     * @param {import("express").Response} res
+     */
+    static findError(error, res){
+        error = error.split(":")
+        const status = error[0]
+        res.status(status).json({ msg: `Ha ocurrido el siguiente error: ${error[1]}` })
+    }
 }
 
 export default clientController

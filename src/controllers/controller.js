@@ -5,14 +5,12 @@
  * @property {Entity} model - Model to handle the data
  */
 export default class Controller {
-
-
     /**
      * A test method to say hello
      * @returns {String} - A greeting
      */
+    // skipcq: JS-0057
     static sayHello(){
-        return "HOLA SOY UN CONTROLADOR"
     }
 
 
@@ -30,10 +28,14 @@ export default class Controller {
         // }
     }
 
-    async find(offset = 0){
-        const data = await this.model.findMany(offset)
-
-        return data
+    /**
+     * Finds one or many entities
+     * @async
+     * @param {Object} obj - Object to be found
+     * @returns {Object|Array} - The found entity
+     */
+    // skipcq: JS-0128, JS-0057
+    static async find(obj){
     } 
 
     /**
@@ -58,14 +60,13 @@ export default class Controller {
     }
 
     /**
-     * 
+     * Response for an error
+     * @override
      * @param {String} error 
      * @param {import("express").Response} res 
      * @returns 
      */
+    // skipcq: JS-0057, JS-0128
     static findError(error, res){
-        error = error.split(":")
-        const status = error[0]
-        res.status(status).json({ msg: `Ha ocurrido el siguiente error: ${error[1]}` })
     }
 }

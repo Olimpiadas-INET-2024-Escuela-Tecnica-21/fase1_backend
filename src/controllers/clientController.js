@@ -24,9 +24,12 @@ class clientController extends Controller {
      * @returns {object|Array} - The created client
     */
     static async find(obj){
-        const clients = await Client.find(obj)
-
-        return clients
+        if(!obj.id){
+            const clients = await Client.findMany(obj.offset)
+            return clients
+        }
+        const client = await Client.findClient(obj.id)
+        return client
     }
 
     /**
@@ -62,7 +65,6 @@ class clientController extends Controller {
                     offset : Number(req.query?.offset) || 0
                 }
             })
-
             res.json(clients)
         } catch(e){
             clientController.findError(e.message , res)
@@ -191,13 +193,7 @@ class clientController extends Controller {
             }
 
 
-            await clientController.update({
-                where : {
-                    id : req.params.id
-                },
-
-                data : req.body
-            })
+            await clientController.update(req.params.id, req.body)
 
             res.json({msg : "Se ha actualizado el cliente exitosamente"})
         } catch(e){

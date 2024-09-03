@@ -1,6 +1,7 @@
 import Entity from "./entity.js"
 import clientRegisterSchema from "../validators/client.schema.js"
-import { ClientRepository } from "./repository.js"
+import {PrismaClient} from "@prisma/client"
+const prisma = new PrismaClient()
 
 // skipcq: JS-D1001
 class ClientModel extends Entity {
@@ -16,13 +17,24 @@ class ClientModel extends Entity {
     /**
      * Finds one or many clients
      * @async
-     * @param {object} data - Data to be created
+     * @param {number} offset - limit query
      * @returns {object|Array} - The created client
      * @throws {Error} - If the repository throws an error
      */
-    static async find(obj){
-        const clients = await ClientRepository.find(obj)
+    static async findMany(offset = 0){
+        const clients = await prisma.client.findMany({
+            take : offset
+        })
         return clients
+    }
+
+    static async findClient(id){
+        const client = await prisma.client.findUnique({
+            where : {
+                id : id
+            }
+        })
+        return client
     }
 
     /**
@@ -42,14 +54,16 @@ class ClientModel extends Entity {
      * @async
      * @param {object} data - Data to be created
      * @throws {Error} - If the data is not valid
-     * @throws {Error} - If the repository throws an error
      * @returns {object} - The created client
      */
-    static async create(data) {
-        ClientModel.validate(data)
-
-        const client = await ClientRepository.create(data)
-        return client
+    static async create({ username, password, email, address }) {
+        const newClient = await prisma.client.create({
+            username : username,
+            password : password,
+            email : email,
+            address : address
+        })
+        return newClient
     }
 
 
@@ -62,10 +76,15 @@ class ClientModel extends Entity {
      * @throws {Error} - If the repository throws an error
      * @returns {object} - The updated client
      */
-    static async update(obj) {
-        ClientModel.validate(obj.data, true)
+    static async update(id, data) {
+        ClientModel.validate(data)
 
-        const updatedClient = await ClientRepository.update(obj.data)
+        const updatedClient = await prisma.client.update({
+            where : {
+                id : id
+            },
+            data
+        })
 
         return updatedClient
     }
@@ -73,11 +92,15 @@ class ClientModel extends Entity {
     /**
      * Delete a client
      * @async
-     * @param {object} obj
+     * @param {number} id
      * @throws {Error} - If the repository throws an error
      */
-    static async delete(obj) {
-        await ClientRepository.delete(obj)
+    static async delete(id) {
+        await prisma.client.delete({
+            where : {
+                id : id
+            }
+        })
     }
 }
 

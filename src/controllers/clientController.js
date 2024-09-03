@@ -29,10 +29,10 @@ class clientController extends Controller{
      * @param {import('express').Response} res 
      * @returns 
      */
-    static async findClient(req, res){
-        const client = await client.findById(req.user.id)
-        res.json(client)
-    }
+    // static async findClient(req, res){
+    //     const client = await findById(req.user.id)
+    //     res.json(client)
+    // }
 
 
     /**
@@ -56,7 +56,8 @@ class clientController extends Controller{
 
     static async login(req, res){
 
-        const client = await Validator.createAuthToken({id: 123,nombre:"ezequiel"}, "123")
+        //const client = await Validator.createAuthToken({id: 123,nombre:"ezequiel"}, "123")
+        const client = await Validator.createAuthToken({id: client.id, name: client.name}, process.env.CLIENT_TOKEN_KEY)
         return res.json(client)
 
 
@@ -93,10 +94,11 @@ class clientController extends Controller{
     static async validate(req, res){
 
         const client = await this.findById(req)
-        const clientKey = await Validator.createAuthToken({...client, isSeller: false}, process.env.CLIENT_TOKEN_KEY)
+        const clientKey = await Validator.createAuthToken({id: client.id, name: client.name}, process.env.CLIENT_TOKEN_KEY)
 
         if(res.cookie != null && Validator.verify(res.cookie, clientKey).id == client.id){  //Duda, porque se usa el res y no el req?
 
+            
             return res.json({message : "cuenta cliente validada"})
 
         }

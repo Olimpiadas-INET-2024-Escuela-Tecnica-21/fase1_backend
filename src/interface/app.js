@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(mainLogger);
 
 app.use("/login", loginRouter);
-app.use(auth);
+//app.use(auth);
 app.use("/client", clientRouter);
 
 app.listen(process.env.PORT || 3000 , () => {

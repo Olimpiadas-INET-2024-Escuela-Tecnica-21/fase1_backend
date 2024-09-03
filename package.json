@@ -2,7 +2,8 @@
   "type": "module",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "run": "node --experimental-vm-modules src/interface/index.js"
+    "run": "node --experimental-vm-modules src/interface/index.js",
+    "dev": "node ./src/interface/app.js"
   },
   "dependencies": {
     "@prisma/client": "^5.19.0",
